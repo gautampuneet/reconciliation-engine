@@ -60,6 +60,39 @@ Typical job flow:
 4. `DataContractViolationError` rows are redirected to quarantine (DLQ bucket/table).
 5. CloudWatch metrics parse structured logs to track `match_rate` and SLA breaches.
 
+### AWS Glue PySpark Example
+
+The engine performs vectorized matching using pandas, so a common pattern is to convert a Glue `DynamicFrame` to a pandas `DataFrame` and then call `engine.run()` using `.to_dict("records")`.
+
+```python
+from awsglue.context import GlueContext
+from pyspark.context import SparkContext
+
+from engine import ReconciliationEngine
+from models import SourceSystem
+
+sc = SparkContext.getOrCreate()
+glue_context = GlueContext(sc)
+
+# Example: read transactions and ledger datasets as DynamicFrames
+# dyf_transactions = glue_context.create_dynamic_frame_from_options(...)
+# dyf_ledger_entries = glue_context.create_dynamic_frame_from_options(...)
+
+# Convert to pandas for vectorized matching
+tx_pdf = dyf_transactions.toDF().toPandas()
+ledger_pdf = dyf_ledger_entries.toDF().toPandas()
+
+engine = ReconciliationEngine(source_system=SourceSystem.CARDS)
+report = engine.run(
+    transactions=tx_pdf.to_dict("records"),
+    ledger_entries=ledger_pdf.to_dict("records"),
+)
+
+print("match_rate:", report.match_rate)
+print("sla_breach:", report.sla_breach)
+print("variances:", len(report.variances))
+```
+
 ## RDS Exception Store Integration
 
 Persist `Variance` (and optionally `TimingDifference`) records into an RDS exception table:

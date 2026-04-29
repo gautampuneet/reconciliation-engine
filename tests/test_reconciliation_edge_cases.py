@@ -17,6 +17,7 @@ def test_match_exactly_at_24_hour_limit_is_timing_difference() -> None:
                 "transaction_id": "TXN_12345678",
                 "amount": Decimal("100.0000"),
                 "currency": "USD",
+                "account_code": "ACCT_001",
                 "posting_date": base_time.isoformat(),
             }
         ],
@@ -26,6 +27,7 @@ def test_match_exactly_at_24_hour_limit_is_timing_difference() -> None:
                 "transaction_id": "TXN_OTHER_1",
                 "amount": Decimal("100.0000"),
                 "currency": "USD",
+                "account_code": "ACCT_001",
                 "posting_date": (base_time + timedelta(hours=24)).isoformat(),
             }
         ],
@@ -45,6 +47,7 @@ def test_amount_difference_exactly_point_zero_one_is_fuzzy_match() -> None:
                 "transaction_id": "TXN_87654321",
                 "amount": Decimal("100.0000"),
                 "currency": "USD",
+                "account_code": "ACCT_001",
                 "posting_date": base_time.isoformat(),
             }
         ],
@@ -54,6 +57,7 @@ def test_amount_difference_exactly_point_zero_one_is_fuzzy_match() -> None:
                 "transaction_id": "TXN_OTHER_2",
                 "amount": Decimal("100.0100"),
                 "currency": "USD",
+                "account_code": "ACCT_001",
                 "posting_date": (base_time + timedelta(hours=1)).isoformat(),
             }
         ],
@@ -74,6 +78,7 @@ def test_currency_mismatch_is_true_variance() -> None:
                 "transaction_id": "TXN_CURR_01",
                 "amount": Decimal("250.0000"),
                 "currency": "USD",
+                "account_code": "ACCT_001",
                 "posting_date": base_time.isoformat(),
             }
         ],
@@ -83,6 +88,7 @@ def test_currency_mismatch_is_true_variance() -> None:
                 "transaction_id": "TXN_OTHER_3",
                 "amount": Decimal("250.0000"),
                 "currency": "EUR",
+                "account_code": "ACCT_001",
                 "posting_date": base_time.isoformat(),
             }
         ],

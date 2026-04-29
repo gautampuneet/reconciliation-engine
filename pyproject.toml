@@ -8,6 +8,7 @@ dependencies = [
   "pydantic>=2.0.0",
   "pydantic-extra-types>=2.0.0",
   "pycountry>=24.0.0",
+  "pandas>=2.2.0",
 ]
 
 [project.optional-dependencies]
@@ -15,13 +16,17 @@ dev = [
   "pytest>=8.0.0",
 ]
 
+[project.scripts]
+reconciliation-cli = "cli:main"
+
 [build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
+package-dir = {"" = "src"}
 packages = ["models", "strategies", "engine"]
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
+pythonpath = ["src"]
 testpaths = ["tests"]

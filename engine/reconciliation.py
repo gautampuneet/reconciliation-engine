@@ -130,3 +130,9 @@ class ReconciliationEngine:
             match_rate=match_rate,
             sla_breach=sla_breach,
         )
+
+
+# Legacy module wrapper: delegate to the production implementation under `src/`.
+from src.engine.reconciliation import ReconciliationEngine as ReconciliationEngine  # noqa: E402
+from src.engine.reconciliation import ReconciliationReport as ReconciliationReport  # noqa: E402
+
